@@ -1,0 +1,64 @@
+1-install twilio sdk : composer require twilio/sdk
+
+2-add this to your .env file :
+TWILIO_SID=your_twilio_sid
+TWILIO_AUTH_TOKEN=your_auth_token
+TWILIO_PHONE_NUMBER=your_twilio_phone_number
+
+
+3-add config service.php file :
+    'twilio' => [
+        'twilio_sid' => env('TWILIO_SID'),
+        'twilio_AUTH_token' => env('TWILIO_AUTH_TOKEN'),
+        'twilio_phone_number' => env('TWILIO_PHONE_NUMBER'),
+    ],
+
+
+4--add twilio service class :
+
+class TwilioService
+{
+    protected $twilio;
+
+    public function __construct()
+    {
+        $this->twilio = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
+    }
+
+    
+    public function sendSms($to, $message)
+    {
+        return $this->twilio->messages->create($to, [
+            'from' => env('TWILIO_PHONE_NUMBER'),
+            'body' => $message,
+        ]);
+    }
+}
+
+
+5-add function sendsms :
+
+ public static function sendSms()
+    {
+        if (self::hasErrors()) return self::next();
+        $request = self::$request;
+
+        self::$randomNumber = random_int(1000, 9999);
+        try {
+            $twilio = new Client(config('services.twilio.twilio_sid'), config('services.twilio.twilio_AUTH_token'));
+            $twilio->messages->create(
+                self::$phone, 
+            [
+                'from' => config('services.twilio.twilio_phone_number'),
+                'body' => 'Your Verification Code Is : '. self::$randomNumber,
+            ]);
+        } catch (\Exception $e) {
+            self::setError([
+                'message' => __( "twilio is not support this number" )
+            ]);
+            return new self;
+        } 
+       return new self;
+    }
+
+6-the cardinationls you will get form your twilio app --phone number->manage->Verified Caller IDs 
