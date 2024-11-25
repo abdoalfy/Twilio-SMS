@@ -5,12 +5,14 @@ TWILIO_SID=your_twilio_sid
 TWILIO_AUTH_TOKEN=your_auth_token
 TWILIO_PHONE_NUMBER=your_twilio_phone_number
 
+
 3-add config service.php file :
     'twilio' => [
         'twilio_sid' => env('TWILIO_SID'),
         'twilio_AUTH_token' => env('TWILIO_AUTH_TOKEN'),
         'twilio_phone_number' => env('TWILIO_PHONE_NUMBER'),
     ],
+
 
 4--add twilio service class :
 
@@ -32,7 +34,6 @@ class TwilioService
         ]);
     }
 }
-
 
 5-add function sendsms :
 
@@ -58,5 +59,6 @@ class TwilioService
         } 
        return new self;
     }
+
 
 6-the cardinationls you will get form your twilio app --phone number->manage->Verified Caller IDs 
