@@ -12,7 +12,6 @@ TWILIO_PHONE_NUMBER=your_twilio_phone_number
         'twilio_phone_number' => env('TWILIO_PHONE_NUMBER'),
     ],
 
-
 4--add twilio service class :
 
 class TwilioService
